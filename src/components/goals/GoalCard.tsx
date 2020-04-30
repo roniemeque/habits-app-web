@@ -2,20 +2,59 @@ import React, { FunctionComponent } from "react";
 import { format } from "date-fns";
 import styled from "../../styles/styled";
 import { css } from "@emotion/core";
+import { gql, useMutation } from "@apollo/client";
 
 interface Props {
   goal: Goal;
 }
 
+const CHANGE_COMPLETED = gql`
+  mutation updateGoal($goalId: ID!, $daysCompleted: [String]) {
+    updateGoal(goalId: $goalId, daysCompleted: $daysCompleted) {
+      _id
+      title
+      daysLength
+      daysCompleted
+    }
+  }
+`;
+
 const GoalCard: FunctionComponent<Props> = ({ goal }) => {
-  const doneToday = goal.daysCompleted.includes(
-    format(new Date(), "yyyy-MM-dd")
-  );
+  const [changeGoal] = useMutation(CHANGE_COMPLETED);
+
+  const today = format(new Date(), "yyyy-MM-dd");
+  const doneToday = goal.daysCompleted.includes(today);
+
+  const toggleToday = () => {
+    let updatedDays;
+    if (doneToday) {
+      updatedDays = goal.daysCompleted.filter((day) => day !== today);
+    } else {
+      updatedDays = [...goal.daysCompleted, today];
+    }
+    changeGoal({
+      variables: {
+        goalId: goal._id,
+        daysCompleted: updatedDays,
+      },
+    });
+
+    // return changeGoal({
+    //   variables: {
+    //     goalId: goal._id,
+    //     daysCompleted: [...goal.daysCompleted, today],
+    //   },
+    // });
+  };
+
   const finished = goal.status === "finished";
-  console.log(goal.daysCompleted);
 
   return (
-    <GoalCardStyled finished={finished} doneToday={doneToday}>
+    <GoalCardStyled
+      onClick={toggleToday}
+      finished={finished}
+      doneToday={doneToday}
+    >
       <div className="icon"></div>
       <div className="info">
         <span className="title">{goal.title}</span>

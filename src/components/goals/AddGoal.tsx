@@ -1,6 +1,40 @@
 import React, { FormEvent, FunctionComponent, useState } from "react";
 import styled from "../../styles/styled";
 import { Button } from "../../styles/Buttons";
+import { gql, useMutation } from "@apollo/client";
+import { GET_GOALS } from "./GoalsList";
+
+interface CreateGoalData {
+  goals: Goal[];
+}
+
+interface CreateGoalVars {
+  title: string;
+  icon: string;
+  daysLength: number;
+  userId: string;
+}
+
+const ADD_GOAL = gql`
+  mutation createGoal(
+    $title: String!
+    $icon: String
+    $userId: ID!
+    $daysLength: Int!
+  ) {
+    createGoal(
+      title: $title
+      icon: $icon
+      userId: $userId
+      daysLength: $daysLength
+    ) {
+      _id
+      title
+      daysLength
+      daysCompleted
+    }
+  }
+`;
 
 interface Props {}
 
@@ -11,6 +45,20 @@ const AddGoal: FunctionComponent<Props> = () => {
     daysLength: 21,
     userId: "5eaa296e164245257d5894a2",
   });
+
+  const [addGoal, result] = useMutation<CreateGoalData, CreateGoalVars>(
+    ADD_GOAL,
+    {
+      update(cache, { data: { createGoal } }) {
+        const { goals } = cache.readQuery({ query: GET_GOALS }) || {};
+        cache.writeQuery({
+          query: GET_GOALS,
+          data: { goals: goals.concat([createGoal]) },
+        });
+      },
+    }
+  );
+  console.log(result);
 
   const handleInput = (
     e: React.FormEvent<HTMLInputElement | HTMLSelectElement>
@@ -25,7 +73,7 @@ const AddGoal: FunctionComponent<Props> = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    console.log(newGoal);
+    addGoal({ variables: { ...newGoal } });
   };
 
   return (

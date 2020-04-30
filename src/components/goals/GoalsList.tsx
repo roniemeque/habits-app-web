@@ -5,7 +5,7 @@ import styled from "../../styles/styled";
 
 interface Props {}
 
-const GET_GOALS = gql`
+export const GET_GOALS = gql`
   query goals {
     goals(userId: 1) {
       _id
