@@ -1,14 +1,37 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { ThemeProvider } from "emotion-theming";
+import { theme } from "./styles/theme";
+import { Global } from "@emotion/core";
+import { globalStyles } from "./styles/global";
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  ApolloProvider,
+} from "@apollo/client";
+import * as serviceWorker from "./serviceWorker";
+
+console.log(process.env.REACT_APP_GRAPHQL_ENDPOINT);
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+  }),
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <Global styles={globalStyles}></Global>
+      <ApolloProvider client={client}>
+        <App></App>
+      </ApolloProvider>
+    </ThemeProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
