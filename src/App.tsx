@@ -20,6 +20,9 @@ const AppStyled = styled.div`
   gap: 2rem;
   max-width: 800px;
   margin: 0 auto;
+  h1 {
+    color: ${({ theme }) => theme.colors.text};
+  }
 `;
 
 export default App;
