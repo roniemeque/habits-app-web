@@ -10,6 +10,7 @@ const GET_GOALS = gql`
     goals(userId: 1) {
       _id
       title
+      daysLength
       daysCompleted
     }
   }
@@ -23,7 +24,7 @@ const GoalsList: FunctionComponent<Props> = () => {
   const { data, loading, error } = useQuery<GoalsData>(GET_GOALS);
 
   if (loading) return <div>loading</div>;
-  if (error || !data) return <div>error</div>;
+  if (error || !data) return null;
 
   const { goals } = data;
 
@@ -49,7 +50,7 @@ const GoalsList: FunctionComponent<Props> = () => {
 const GoalsListStyled = styled.div`
   color: ${({ theme }) => theme.colors.text};
   .captions {
-    margin: 1rem 0 0.5rem;
+    margin: 1rem 0 0.8rem;
     display: grid;
     gap: 1.5rem;
     grid-auto-flow: column;
@@ -86,7 +87,6 @@ const GoalsListStyled = styled.div`
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(auto, 22rem));
-    justify-content: center;
   }
 `;
 

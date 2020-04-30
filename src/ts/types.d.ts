@@ -9,7 +9,7 @@ interface Goal {
   title: string;
   icon: string;
   owner: User;
-  length: number;
+  daysLength: number;
   daysCompleted: string[];
   status: string;
 }
