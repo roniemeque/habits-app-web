@@ -64,7 +64,7 @@ export const globalStyles = () => css`
     font: inherit;
   }
   input {
-    appearance: none;
+    border: none;
   }
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -94,6 +94,11 @@ export const globalStyles = () => css`
     &:focus {
       transform: scale(0.99) translateY(0);
     }
+  }
+  fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
   }
 
   .error {
