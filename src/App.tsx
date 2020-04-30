@@ -7,6 +7,7 @@ import styled from "./styles/styled";
 function App() {
   return (
     <AppStyled>
+      <h1>Habits Helper App</h1>
       <GoalsList></GoalsList>
       <AddGoal></AddGoal>
     </AppStyled>
