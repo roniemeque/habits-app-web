@@ -20,7 +20,7 @@ const dark = {
   tertiary: "#e53170",
 };
 
-const chosen = dark;
+const chosen = light;
 
 const defaultTheme = {
   gutter: "1rem",
