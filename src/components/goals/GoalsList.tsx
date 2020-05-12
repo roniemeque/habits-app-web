@@ -8,7 +8,7 @@ interface Props {}
 export const GET_GOALS = gql`
   query goals {
     goals(userId: 1) {
-      _id
+      id
       title
       daysLength
       daysCompleted
@@ -22,6 +22,7 @@ interface GoalsData {
 
 const GoalsList: FunctionComponent<Props> = () => {
   const { data, loading, error } = useQuery<GoalsData>(GET_GOALS);
+  console.log(data, loading, error);
 
   if (loading) return <div>loading</div>;
   if (error || !data) return null;
@@ -38,7 +39,7 @@ const GoalsList: FunctionComponent<Props> = () => {
       </div>
       <ul>
         {goals.map((goal) => (
-          <li key={goal._id}>
+          <li key={goal.id}>
             <GoalCard goal={goal}></GoalCard>
           </li>
         ))}

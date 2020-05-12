@@ -11,7 +11,7 @@ interface Props {
 const CHANGE_COMPLETED = gql`
   mutation updateGoal($goalId: ID!, $daysCompleted: [String]) {
     updateGoal(goalId: $goalId, daysCompleted: $daysCompleted) {
-      _id
+      id
       title
       daysLength
       daysCompleted
@@ -34,14 +34,14 @@ const GoalCard: FunctionComponent<Props> = ({ goal }) => {
     }
     changeGoal({
       variables: {
-        goalId: goal._id,
+        goalId: goal.id,
         daysCompleted: updatedDays,
       },
     });
 
     // return changeGoal({
     //   variables: {
-    //     goalId: goal._id,
+    //     goalId: goal.id,
     //     daysCompleted: [...goal.daysCompleted, today],
     //   },
     // });

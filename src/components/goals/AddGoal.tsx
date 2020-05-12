@@ -28,7 +28,7 @@ const ADD_GOAL = gql`
       userId: $userId
       daysLength: $daysLength
     ) {
-      _id
+      id
       title
       daysLength
       daysCompleted

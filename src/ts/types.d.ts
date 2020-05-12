@@ -1,11 +1,11 @@
 interface User {
-  _id: any;
+  id: any;
   name: string;
   email: string;
 }
 
 interface Goal {
-  _id: any;
+  id: any;
   title: string;
   icon: string;
   owner: User;
